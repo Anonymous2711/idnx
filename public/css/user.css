@@ -1,0 +1,17 @@
+.root {
+    position: relative;
+    top: 0px;left: 30%;right: 30%;bottom: 0px;
+    background-color: #fff;
+}
+
+@media (max-width: 1080px) {
+    .root {
+        left: 0px;right: 0px;
+    }
+}
+
+@media (max-width: 480px) {
+    .root {
+        left: 0px;right: 0px;
+    }
+}
