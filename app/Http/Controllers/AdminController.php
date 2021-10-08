@@ -107,4 +107,15 @@ class AdminController extends Controller
 
         return redirect()->route('admin.admin')->with(['message' => "Data admin ".$admin->name." berhasil dihapus"]);
     }
+    public function faq() {
+        $myData = self::me();
+        $message = Session::get('message');
+        $faqs = FaqController::get()->get();
+        
+        return view('admin.faq', [
+            'myData' => $myData,
+            'message' => $message,
+            'faqs' => $faqs,
+        ]);
+    }
 }

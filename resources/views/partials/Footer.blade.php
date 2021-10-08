@@ -2,11 +2,10 @@
     <div class="wrap">
         <div class="bagi lebar-50 about">
             <div class="logo">
-                <img src="{{ asset('./images/logo.jpg') }}">
+                <img src="{{ asset('./images/logo.png') }}">
             </div>
-            <div class="mt-4 teks-tebal">Koridor Coworking Space</div>
-            <div class="mt-1 teks-transparan teks-kecil">Gedung Siola</div>
-            <div class="mt-1 teks-transparan teks-kecil">Jalan Tunjungan No. 1, Surabaya</div>
+            <div class="mt-4 teks-tebal">Rungkut Menanggal 14</div>
+            <div class="mt-1 teks-transparan teks-kecil">Gunung Anyar, Surabaya</div>
         </div>
         <div class="bagi lebar-25">
             <h3>Laman</h3>

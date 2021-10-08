@@ -13,8 +13,8 @@ class UserController extends Controller
             'pages' => $pages
         ]);
     }
-    public function page($id) {
-        $data = PageController::get([['id', $id]]);
+    public function page($slug) {
+        $data = PageController::get([['slug', $slug]]);
         $data->increment('read_counter');
         $page = $data->first();
         $pages = PageController::get([['is_published', 1]])->get();
@@ -22,6 +22,15 @@ class UserController extends Controller
         return view('page', [
             'page' => $page,
             'pages' => $pages
+        ]);
+    }
+    public function faq() {
+        $pages = PageController::get([['is_published', 1]])->get();
+        $faqs = FaqController::get()->get();
+
+        return view('faq', [
+            'faqs' => $faqs,
+            'pages' => $pages,
         ]);
     }
 }

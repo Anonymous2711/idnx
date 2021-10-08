@@ -52,6 +52,12 @@
                 </ul>
             </li>
         </a>
+        <a href="{{ route('admin.faq') }}">
+            <li class="{{ $currentRoute->uri == 'admin/faq' ? 'active' : '' }}">
+                <div class="icon"><i class="fas fa-question"></i></div>
+                <div class="text">FAQ</div>
+            </li>
+        </a>
         <a href="{{ route('admin.admin') }}">
             <li class="{{ $currentRoute->uri == 'admin/admin' ? 'active' : '' }}">
                 <div class="icon"><i class="fas fa-users"></i></div>

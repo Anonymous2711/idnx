@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Str;
 use App\Models\Page;
 use Illuminate\Http\Request;
 
@@ -33,8 +34,12 @@ class PageController extends Controller
     public function update($id, Request $request) {
         $data = Page::where('id', $id);
         $page = $data->first();
+        $title = $request->title;
+        $slug = Str::slug($title);
+
         $updateData = $data->update([
-            'title' => $request->title,
+            'title' => $title,
+            'slug' => $slug,
             'body' => $request->body,
             'is_published' => $request->is_published,
         ]);

@@ -9,11 +9,17 @@
     </h1>
     <nav class="mobile-menu">
         <nav class="menu">
+            <a href="{{ route('user.index') }}">
+                <li>Home</li>
+            </a>
             @foreach ($pages as $page)
-                <a href="{{ route('user.page', $page->id) }}">
+                <a href="{{ route('user.page', $page->slug) }}">
                     <li>{{ $page->title }}</li>
                 </a>
             @endforeach
+            <a href="{{ route('user.faq') }}">
+                <li>FAQ</li>
+            </a>
         </nav>
         <div class="action">
             <a href="{{ route('user.index') }}">
