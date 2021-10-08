@@ -10,3 +10,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => "user"], function () {
     Route::post('login', "UserController@login")->name('api.user.login');
 });
+
+Route::group(['prefix' => "solog"], function () {
+    Route::get('routestart', "ApiController@routestart")->name('api.routestart');
+    Route::post('routeend', "ApiController@routeEnd")->name('api.routeEnd');
+    Route::get('commodity', "ApiController@commodity")->name('api.commodity');
+    Route::post('calculate', "ApiController@calculate")->name('api.calculate');
+});

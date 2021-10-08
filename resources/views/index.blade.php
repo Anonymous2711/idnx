@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="fa/css/all.min.css">
     <link rel="stylesheet" href="css/index.css">
+    <style>
+        #ongkirResult { margin-top: 25px; }
+        #ongkirResult .item {
+            box-shadow: 1px 1px 5px 1px #ddd;
+            border-radius: 6px;
+            padding: 1px;
+        }
+        #ongkirResult .item h3 {
+            font-size: 25px;
+            font-family: RobotoBold;
+        }
+    </style>
 </head>
 <body>
     
@@ -15,7 +27,7 @@
 <div class="bg-tab rata-tengah">
     <div class="slides">
         <h2 class="mt-5">Kirim ke Luar Negeri dengan Harga Terjangkau</h2>
-        <div class="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore illum corrupti voluptatum, illo quam provident est error officiis enim! Error odio ipsa, natus accusantium exercitationem deleniti debitis quibusdam praesentium doloribus?</div>
+        <div class="mt-2">IDN Express adalah sebuah perusahaan yang bergerak di bidang jasa pengiriman paket dan dokumen secara door to door, ke seluruh dunia sejak tahun 2019.</div>
         <br />
         <!-- <button class="primary">Action Button</button>
         <button class="primary">Secondary Button</button> -->
@@ -44,21 +56,24 @@
             </div>
             <div class="tab-content d-none mb-4" id="formOngkir">
                 <form action="#">
-                    <div class="mt-2">Negara Tujuan :</div>
-                    <select name="country" class="box">
-                        <option value="INDONESIA">INDONESIA</option>
-                        <option value="MALAYSIA">MALAYSIA</option>
-                        <option value="SINGAPORE">SINGAPORE</option>
-                        <option value="AUSTRALIA">AUSTRALIA</option>
+                    <div class="mt-2">Asal :</div>
+                    <select name="origin" id="origin" class="box" onchange="chooseOrigin(this.value)" required>
+                        <option value="">-- PILIH ASAL PENGIRIMAN ---</option>
+                    </select>
+                    <div class="mt-2">Tujuan :</div>
+                    <select name="destination" id="destination" class="box" required>
+                        <option value="">-- PILIH TUJUAN --</option>
                     </select>
 
                     <div class="mt-2">Jenis Paket :</div>
-                    <select name="type" class="box">
-                        <option>JENIS A</option>
-                        <option>JENIS B</option>
-                        <option>JENIS C</option>
+                    <select name="commodity" class="box" id="commodity" required>
+                        <option value="">-- PILIH ---</option>
                     </select>
 
+                    <div class="mt-2">Berat :</div>
+                    <input type="text" class="box" name="weight" id="weight">
+
+                    {{-- 
                     <div class="mt-2">Berat :</div>
                     <input type="text" class="box" name="weight">
 
@@ -75,15 +90,18 @@
                         <div class="mt-2 teks-transparan">Tinggi <span class="teks-kecil">(cm)</span> :</div>
                         <input type="number" class="box" name="tinggi">
                     </div>
+                     --}}
 
                     <button class="lebar-100 mt-3 pink rounded-circle">HITUNG HARGA</button>
                 </form>
+
+                <div id="ongkirResult"></div>
             </div>
         </div>
     </div>
     <br />
     <div class="mt-5 mb-5">
-        asd
+        &nbsp;
     </div>
     
     @include('./partials/Footer')
@@ -189,14 +207,105 @@
     }
 
     const getOrigin = () => {
-        let getting = post("api.php", {
-            endpoint: "https://apim.solog.id:8080/idnx/routestart/"
+        let getting = get("{{ route('api.routestart') }}")
+        .then(res => {
+            res = JSON.parse(res);
+            let datas = res.data;
+            console.log(datas);
+            datas.forEach(data => {
+                createElement({
+                    el: 'option',
+                    attributes: [
+                        ['value', data.id]
+                    ],
+                    html: data.name,
+                    createTo: '#origin'
+                });
+            });
+        });
+    }
+
+    getOrigin();
+
+    const chooseOrigin = originID => {
+        console.log('getting destination...');
+        let req = post("{{ route('api.routeEnd') }}", {
+            originID: originID
         })
         .then(res => {
-            console.log(res);
+            res = JSON.parse(res);
+            let datas = res.data;
+            select("#destination").innerHTML = "";
+            datas.forEach(data => {
+                createElement({
+                    el: 'option',
+                    attributes: [
+                        ['value', data.id]
+                    ],
+                    html: data.name,
+                    createTo: '#destination'
+                });
+            })
         })
     }
-    getOrigin();
+
+    const getCommodity = () => {
+        let req = get("{{ route('api.commodity') }}")
+        .then(res => {
+            res = JSON.parse(res);
+            let datas = res.data;
+            console.log(datas);
+            datas.forEach(data => {
+                createElement({
+                    el: 'option',
+                    attributes: [
+                        ['value', data.name]
+                    ],
+                    html: data.name,
+                    createTo: '#commodity'
+                });
+            });
+        });
+    }
+
+    getCommodity();
+
+    select("#formOngkir form").onsubmit = function (e) {
+        console.log('getting ongkir...');
+        let req = post("{{ route('api.calculate') }}", {
+            originID: select("#origin").value,
+            destinationID: select("#destination").value,
+        })
+        .then(res => {
+            res = JSON.parse(res);
+            let commodity = select("#commodity").value;
+            let weight = select("#weight").value;
+            let datas = res.data;
+            select("#ongkirResult").innerHTML = "";
+            datas.forEach(data => {
+                if (data.comodity == commodity && data.qty_tonase == weight) {
+                    console.log(data);
+                    createElement({
+                        el: 'div',
+                        attributes: [['class', 'bagi bagi-2']],
+                        html: `<div class="wrap">
+    <div class="item">
+        <div class="wrap super">
+            <h3>${data.name} - ${data.qty_tonase} kg</h3>
+            <div class="mt-1">${toIdr(data.price_tonase)}</div>
+            <div class="mt-2">${data.route}</div>
+        </div>
+    </div>
+</div>`,
+                        createTo: "#ongkirResult"
+                    });
+                } else {
+                    console.log(data);
+                }
+            })
+        })
+        e.preventDefault();
+    }
 </script>
 
 </body>
