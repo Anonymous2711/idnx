@@ -22,4 +22,11 @@ Route::group(['prefix' => "admin"], function () {
         Route::post('{id}/update', "PageController@update")->name('admin.pages.update');
         Route::get('/', "AdminController@pages")->name('admin.pages');
     });
+
+    Route::group(['prefix' => "admin"], function () {
+        Route::post('store', "AdminController@store")->name('admin.admin.store')->middleware('Admin');
+        Route::post('update', "AdminController@update")->name('admin.admin.update')->middleware('Admin');
+        Route::get('{id}/delete', "AdminController@delete")->name('admin.admin.delete')->middleware('Admin');
+        Route::get('/', "AdminController@admin")->name('admin.admin');
+    });
 });

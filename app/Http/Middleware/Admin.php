@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,10 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
+        $myData = Auth::guard('admin')->user();
+        if ($myData == "") {
+            return redirect()->route('admin.loginPage')->withErrors(['Anda harus login untuk melanjutkan']);
+        }
         return $next($request);
     }
 }

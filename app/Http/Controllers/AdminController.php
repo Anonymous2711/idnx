@@ -21,8 +21,6 @@ class AdminController extends Controller
             }
         }
 
-        $myData->pages = PageController::get()->get();
-
         return $myData;
     }
     public function loginPage() {
@@ -37,6 +35,10 @@ class AdminController extends Controller
             'password' => $request->password,
         ]);
 
+        if (!$loggingIn) {
+            return redirect()->route('admin.loginPage')->withErrors(['Kombinasi email dan password tidak tepat']);
+        }
+
         return redirect()->route('admin.dashboard');
     }
     public function logout() {
@@ -47,6 +49,7 @@ class AdminController extends Controller
     }
     public function dashboard() {
         $myData = self::me();
+        return redirect()->route('admin.pages');
         
         return view('admin.dashboard', [
             'myData' => $myData
@@ -60,5 +63,48 @@ class AdminController extends Controller
             'myData' => $myData,
             'pages' => $pages,
         ]);
+    }
+    public function admin() {
+        $myData = self::me();
+        $message = Session::get('message');
+        $admins = Admin::all();
+        
+        return view('admin.admin', [
+            'myData' => $myData,
+            'message' => $message,
+            'admins' => $admins,
+        ]);
+    }
+    public function store(Request $request) {
+        $saveData = Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('admin.admin')->with(['message' => "Admin baru berhasil ditambahkan"]);
+    }
+    public function update(Request $request) {
+        $id = $request->id;
+        $toUpdate = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+        if ($request->password != "") {
+            $toUpdate['password'] = bcrypt($request->password);
+        }
+        
+        $data = Admin::where('id', $id);
+        $admin = $data->first();
+        $updateData = $data->update($toUpdate);
+        
+        return redirect()->route('admin.admin')->with(['message' => "Data admin ".$admin->name." berhasil diubah"]);
+    }
+    public function delete($id) {
+        $data = Admin::where('id', $id);
+        $admin = $data->first();
+        $deleteData = $data->delete();
+
+        return redirect()->route('admin.admin')->with(['message' => "Data admin ".$admin->name." berhasil dihapus"]);
     }
 }

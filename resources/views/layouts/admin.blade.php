@@ -24,12 +24,12 @@
         </div>
     </div>
     <ul>
-        <a href="{{ route('admin.dashboard') }}">
+        {{-- <a href="{{ route('admin.dashboard') }}">
             <li class="{{ $currentRoute->uri == 'admin/dashboard' ? 'active' : '' }}">
                 <div class="icon"><i class="fas fa-home"></i></div>
                 <div class="text">Dashboard</div>
             </li>
-        </a>
+        </a> --}}
         <a href="#">
             <li class="{{ $currentRoute->getPrefix() == 'admin/page' ? 'active' : '' }}">
                 <div class="icon"><i class="fas fa-file"></i></div>
@@ -50,6 +50,12 @@
                         </li>
                     </a>
                 </ul>
+            </li>
+        </a>
+        <a href="{{ route('admin.admin') }}">
+            <li class="{{ $currentRoute->uri == 'admin/admin' ? 'active' : '' }}">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <div class="text">User Admin</div>
             </li>
         </a>
         <a href="{{ route('admin.logout') }}">

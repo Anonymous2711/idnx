@@ -3,6 +3,13 @@
 @section('title', "Login Admin")
 
 @section('content')
+@if ($errors->count() != 0)
+    @foreach ($errors->all() as $err)
+        <div class="bg-merah-transparan rounded p-2 mb-3">
+            {{ $err }}
+        </div>
+    @endforeach
+@endif
 <form action="#" method="POST">
     {{ csrf_field() }}
     <div class="mt-2">Email :</div>

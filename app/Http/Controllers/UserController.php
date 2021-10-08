@@ -17,7 +17,7 @@ class UserController extends Controller
         $data = PageController::get([['id', $id]]);
         $data->increment('read_counter');
         $page = $data->first();
-        $pages = PageController::get()->get();
+        $pages = PageController::get([['is_published', 1]])->get();
 
         return view('page', [
             'page' => $page,

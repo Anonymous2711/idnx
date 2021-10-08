@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('fa/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+    <style>
+        p { margin: 25px 0px; }
+    </style>
 </head>
 <body>
 
@@ -17,8 +20,8 @@
 </div>
 
 <div class="content-section">
-    <div class="wrap">
-        <pre>{{ $page->body }}</pre>
+    <div class="wrap super">
+        {!! $page->body !!}
     </div>
 
     @include('./partials/Footer')

@@ -2,6 +2,10 @@
 
 @section('title', "Edit Halaman")
 
+@section('head.dependencies')
+<script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+@endsection
+
 @php
     $publishStatus = [0 => "Tidak", 1 => "Ya"];
 @endphp
@@ -32,4 +36,10 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script>
+    CKEDITOR.replace('body');
+</script>
 @endsection
