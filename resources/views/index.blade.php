@@ -18,6 +18,21 @@
             font-size: 25px;
             font-family: RobotoBold;
         }
+        #resiResult {
+            margin-top: 35px;
+            text-align: center;
+        }
+        #resiResult .item {
+            display: inline-block;
+            text-align: left;
+            width: 60%;
+            border-left: 8px solid #ddd;
+            padding: 10px 35px;
+            box-sizing: border-box;
+        }
+        #resiResult .item.active {
+            border-left: 8px solid #eb597b;
+        }
     </style>
 </head>
 <body>
@@ -53,6 +68,17 @@
                     <input type="text" class="box" name="resi" id="noResi" />
                     <button class="pink mt-3 lebar-100 rounded-circle">Cek Resi</button>
                 </form>
+
+                <div id="resiResult">
+                    {{-- <div class="item">
+                        <h4>Picked up</h4>
+                        <div class="teks-kecil">04.23</div>
+                    </div>
+                    <div class="item">
+                        <h4>In Transit</h4>
+                        <div class="teks-kecil">04.23</div>
+                    </div> --}}
+                </div>
             </div>
             <div class="tab-content d-none mb-4" id="formOngkir">
                 <form action="#">
@@ -74,8 +100,6 @@
                     <input type="text" class="box" name="weight" id="weight">
 
                     {{-- 
-                    <div class="mt-2">Berat :</div>
-                    <input type="text" class="box" name="weight">
 
                     <div class="mt-2">Dimensi :</div>
                     <div class="bagi bagi-3">
@@ -107,58 +131,11 @@
     @include('./partials/Footer')
 </div>
 
-<div class="contact-widget corner-top-left corner-top-right">
-    <div class="header bg-hijau pointer" onclick="toggleContactWidget(this)">
-        Butuh Bantuan?
-    </div>
-    <div class="content smallPadding d-none">
-        <div class="wrap super">
-            <div class="mb-2">Hi, silahkan klik CS kami di bawah, kami siap membantu Anda segera</div>
-            <a href="#" target="_blank">
-                <div class="item bayangan-5 rounded">
-                    <div class="bagi lebar-10">
-                        <div class="icon"><i class="fab fa-whatsapp"></i></div>
-                    </div>
-                    <div class="bagi lebar-90 pl-2">
-                        Kontak Admin
-                        <div class="teks-kecil teks-transparan keterangan">Cek Harga</div>
-                    </div>
-                </div>
-            </a>
-            <a href="#" target="_blank">
-                <div class="item bayangan-5 rounded">
-                    <div class="bagi lebar-10">
-                        <div class="icon"><i class="fab fa-whatsapp"></i></div>
-                    </div>
-                    <div class="bagi lebar-90 pl-2">
-                        Kontak Admin
-                        <div class="teks-kecil teks-transparan keterangan">Cek Harga</div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="teks-kecil rata-tengah mb-2">atau</div>
-        <div class="rata-tengah contact-list">
-            <a href="#" target="_blank">
-                <div class="bagi bagi-3 item">
-                    <i class="fas fa-envelope"></i>
-                </div>
-            </a>
-            <a href="#" target="_blank">
-                <div class="bagi bagi-3 item">
-                    <i class="fas fa-phone-alt"></i>
-                </div>
-            </a>
-            <a href="#" target="_blank">
-                <div class="bagi bagi-3 item">
-                    <i class="fas fa-map-marker"></i>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
+@include('./partials/Contact')
 
-<script src="js/base.js"></script>
+<script src="{{ asset('js/base.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 <script>
     const toggleTab = btn => {
         let type = btn.getAttribute('tab-type');
@@ -170,11 +147,6 @@
         select(`#form${type}`).classList.remove('d-none');
         btn.classList.add('active');
         borderBottom.setAttribute('color', '#ff0066');
-    }
-
-    const toggleContactWidget = btn => {
-        let widgetContent = btn.parentNode.childNodes[3];
-        widgetContent.classList.toggle('d-none');
     }
 
     const toggleHeaderMenu = () => {
@@ -192,17 +164,31 @@
         button.innerHTML = "<i class='fas fa-spinner'></i> loading...";
         let idResi = select("#noResi").value;
         console.log(`mengecek resi : ${idResi}`);
-        let url = baseUrl.tracking;
-        let action = `${url}/${idResi}`;
-        fetch(action, {
-            mode: 'no-cors'
+        let req = post("{{ route('api.resi') }}", {
+            resi: idResi
         })
-        .then(res => res.text())
         .then(res => {
             button.innerHTML = "Cek Resi";
-            console.log(res);
-        });
-        return false;
+            res = JSON.parse(res);
+            let datas = res.data;
+            select("#resiResult").innerHTML = "";
+            datas.forEach(data => {
+                console.log(data);
+                let classes = "item";
+                let createdAt = "";
+                if (data.created_at != null) {
+                    classes += " active";
+                    createdAt = moment(data.created_at).format('LT')
+                }
+                createElement({
+                    el: 'div',
+                    attributes: [['class', classes]],
+                    html: `<h4>${data.name}</h4>
+<div class="teks-kecil">${createdAt}</div>`,
+                    createTo: '#resiResult'
+                })
+            })
+        })
         e.preventDefault();
     }
 

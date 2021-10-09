@@ -19,6 +19,8 @@
     <h2>{{ $page->title }}</h2>
 </div>
 
+@include('./partials/Contact')
+
 <div class="content-section">
     <div class="wrap super">
         {!! $page->body !!}

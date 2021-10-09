@@ -36,4 +36,12 @@ class ApiController extends Controller
 
         return response()->json($response->body());
     }
+    public function resi(Request $request) {
+        $resi = $request->resi;
+        $endpoint = "https://apim.solog.id:8080/idnx/resi/".$resi;
+
+        $response = Http::withOptions(['verify' => false])->get($endpoint);
+
+        return response()->json($response->body());
+    }
 }

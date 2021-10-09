@@ -16,6 +16,8 @@
     <h2>Frequently Asked Question</h2>
 </div>
 
+@include('./partials/Contact')
+
 <div class="content-section">
     <div class="wrap">
         @foreach ($faqs as $faq)

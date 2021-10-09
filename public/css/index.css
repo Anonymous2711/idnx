@@ -124,6 +124,7 @@ header .action {
     bottom: 0px;right: 5%;
     width: 320px;
     background-color: #fff;
+    z-index: 5;
 }
 .contact-widget .header {
     padding: 15px 30px;
