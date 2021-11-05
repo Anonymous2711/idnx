@@ -39,7 +39,7 @@
     
 @include('./partials/Header')
 
-<div class="bg-tab rata-tengah">
+<div class="bg-tab rata-tengah" id="bg-tab">
     <div class="slides">
         <h2 class="mt-5">Kirim ke Luar Negeri dengan Harga Terjangkau</h2>
         <div class="mt-2">IDN Express adalah sebuah perusahaan yang bergerak di bidang jasa pengiriman paket dan dokumen secara door to door, ke seluruh dunia sejak tahun 2019.</div>
@@ -47,6 +47,12 @@
         <!-- <button class="primary">Action Button</button>
         <button class="primary">Secondary Button</button> -->
     </div>
+    <!-- <div class="slides" bg-img='https://thumbs.dreamstime.com/z/electricity-isometric-colored-d-composition-electricity-isometric-colored-d-composition-electric-appliances-online-headline-d-114145588.jpg'>
+        <br />
+    </div>
+    <div class="slides" bg-img='https://thumbs.dreamstime.com/z/isometric-warehouse-logistics-concept-logistic-workers-packed-goods-forklift-containers-vector-illustration-61971814.jpg'>
+        <br />
+    </div> -->
 </div>
 
 <div class="tab-container rata-tengah">
@@ -174,19 +180,21 @@
             select("#resiResult").innerHTML = "";
             datas.forEach(data => {
                 console.log(data);
-                let classes = "item";
-                let createdAt = "";
-                if (data.created_at != null) {
-                    classes += " active";
-                    createdAt = moment(data.created_at).format('LT')
+                if(data.is_check){
+                    let classes = "item";
+                    let createdAt = "";
+                    if (data.created_at != null) {
+                        classes += " active";
+                        createdAt = moment(data.created_at).format('LT')
+                    }
+                    createElement({
+                        el: 'div',
+                        attributes: [['class', classes]],
+                        html: `<h4>${data.name}</h4>
+    <div class="teks-kecil">${createdAt}</div>`,
+                        createTo: '#resiResult'
+                    })
                 }
-                createElement({
-                    el: 'div',
-                    attributes: [['class', classes]],
-                    html: `<h4>${data.name}</h4>
-<div class="teks-kecil">${createdAt}</div>`,
-                    createTo: '#resiResult'
-                })
             })
         })
         e.preventDefault();
@@ -274,15 +282,15 @@
                     createElement({
                         el: 'div',
                         attributes: [['class', 'bagi bagi-2']],
-                        html: `<div class="wrap">
-    <div class="item">
-        <div class="wrap super">
-            <h3>${data.name} - ${data.qty_tonase} kg</h3>
-            <div class="mt-1">${toIdr(data.price_tonase)}</div>
-            <div class="mt-2">${data.route}</div>
-        </div>
-    </div>
-</div>`,
+                        html:   `<div class="wrap">
+                                    <div class="item">
+                                        <div class="wrap super">
+                                            <h3>${data.name} - ${data.qty_tonase} kg</h3>
+                                            <div class="mt-1">${toIdr(data.price_tonase)}</div>
+                                            <div class="mt-2">${data.route}</div>
+                                        </div>
+                                    </div>
+                                </div>`,
                         createTo: "#ongkirResult"
                     });
                 } else {
@@ -292,6 +300,28 @@
         })
         e.preventDefault();
     }
+
+    var indexValue = 0;
+    const slideShow = () => {
+        setTimeout(slideShow, 5000);
+        var x;
+        const slide = document.querySelectorAll(".slides");
+        for(x = 0; x < slide.length; x++){
+            slide[x].style.display = "none";
+        }
+        indexValue++;
+        if(indexValue > slide.length){indexValue = 1}
+        slide[indexValue -1].style.display = "inline-block";
+        const bgColor = slide[indexValue -1].getAttribute('bg-img')
+        if(bgColor){
+            document.getElementById("bg-tab").style.backgroundColor = 'none'
+            document.getElementById("bg-tab").style.backgroundImage = "url("+bgColor+")"
+        }else{
+            document.getElementById("bg-tab").style.backgroundImage = "none"
+            document.getElementById("bg-tab").style.backgroundColor = '#ff0066'
+        }
+    }
+    slideShow();
 </script>
 
 </body>
