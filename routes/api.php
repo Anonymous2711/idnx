@@ -17,4 +17,5 @@ Route::group(['prefix' => "solog"], function () {
     Route::get('commodity', "ApiController@commodity")->name('api.commodity');
     Route::post('calculate', "ApiController@calculate")->name('api.calculate');
     Route::post('resi', "ApiController@resi")->name('api.resi');
+    Route::get('company', "ApiController@company")->name('api.company');
 });

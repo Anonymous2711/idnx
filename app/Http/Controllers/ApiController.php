@@ -44,4 +44,14 @@ class ApiController extends Controller
 
         return response()->json($response->body());
     }
+    public function company(Request $request) {
+        $endpoint = "https://apim.solog.id:8080/idnx/company";
+
+        if($request->filled("search")){
+            $endpoint = "https://apim.solog.id:8080/idnx/company?search=".$request->search;
+        }
+        $response = Http::withOptions(['verify' => false])->get($endpoint);
+
+        return response()->json($response->body());
+    }
 }

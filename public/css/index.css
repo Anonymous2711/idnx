@@ -68,6 +68,7 @@ header .action {
     position: absolute;
     top: 65px;left: 0px;right: 0px;
     background-color: #ff0066;
+    background-size: revert;
     height: 500px;
     border-bottom-left-radius: 55px;
     border-bottom-right-radius: 55px;

@@ -22,10 +22,13 @@
 @include('./partials/Contact')
 
 <div class="content-section">
-    <div class="wrap super">
-        {!! $page->body !!}
-    </div>
-
+    @if(!str_contains($page->body, 'view-blade'))
+        <div class="wrap super">
+            {!! $page->body !!}
+        </div>
+    @else
+        @include('./partials/'.explode('.',$page->body)[1])
+    @endif
     @include('./partials/Footer')
 </div>
     
