@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </a>
-            <a href="https://wa.me/6282236002460" target="_blank">
+            <a href="https://wa.me/6282236002640" target="_blank">
                 <div class="item bayangan-5 rounded">
                     <div class="bagi lebar-10">
                         <div class="icon"><i class="fab fa-whatsapp"></i></div>

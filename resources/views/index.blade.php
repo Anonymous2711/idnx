@@ -99,7 +99,7 @@
                 </div>
                 <div class="item">
                     <div class="wrap">
-                        <a href="https://wa.me/6282236002460" target="_blank" style="color: #ffff;">    
+                        <a href="https://wa.me/6282236002640" target="_blank" style="color: #ffff;">    
                             <button type="button" class="pink rounded-circle">   
                                 <i class="fab fa-whatsapp"></i> Kontak Admin 2
                             </button>
