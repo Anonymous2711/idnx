@@ -33,7 +33,7 @@
             let datas = res.data;
             document.getElementById('content-view').innerHTML = ""
             datas.forEach(data => {
-                if(!data.is_center){
+                // if(!data.is_center){
                     createElement({
                         el: 'div',
                         attributes: [['class', 'bagi bagi-2']],
@@ -55,7 +55,7 @@
                         //     +  "</ul>",
                         createTo: '#content-view'
                     });
-                }
+                // }
             })
         });
     }

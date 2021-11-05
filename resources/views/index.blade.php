@@ -63,7 +63,7 @@
                 <hr size="3px" width="15%" color="#ff0066" />
             </div>
             <div class="bagi bagi-2 button pointer" onclick="toggleTab(this)" tab-type="Ongkir">
-                SIMULASI HARGA
+                CEK HARGA
                 <hr size="3px" width="15%" color="#ddd" />
             </div>
         </div>
@@ -86,8 +86,27 @@
                     </div> --}}
                 </div>
             </div>
-            <div class="tab-content d-none mb-4" id="formOngkir">
-                <form action="#">
+            <div class="tab-content d-none mb-4 rata-tengah" id="formOngkir" style="padding-left: 50px; padding-right: 50px;">
+                <div class="mt-2">Hubungi customer service IDN Express untuk mengetahui rate pengiriman dan promo menarik dari IDN Express.</div>
+                <div class="item">
+                    <div class="wrap">
+                        <a href="https://wa.me/6282232202020" target="_blank" style="color: #ffff;">
+                            <button type="button" class="pink rounded-circle">
+                                <i class="fab fa-whatsapp"></i> Kontak Admin 1
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="wrap">
+                        <a href="https://wa.me/6282236002460" target="_blank" style="color: #ffff;">    
+                            <button type="button" class="pink rounded-circle">   
+                                <i class="fab fa-whatsapp"></i> Kontak Admin 2
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <!-- <form action="#">
                     <div class="mt-2">Asal :</div>
                     <select name="origin" id="origin" class="box" onchange="chooseOrigin(this.value)" required>
                         <option value="">-- PILIH ASAL PENGIRIMAN ---</option>
@@ -123,9 +142,9 @@
                      --}}
 
                     <button class="lebar-100 mt-3 pink rounded-circle">HITUNG HARGA</button>
-                </form>
+                </form> -->
 
-                <div id="ongkirResult"></div>
+                <!-- <div id="ongkirResult"></div> -->
             </div>
         </div>
     </div>
@@ -219,7 +238,7 @@
         });
     }
 
-    getOrigin();
+    // getOrigin();
 
     const chooseOrigin = originID => {
         console.log('getting destination...');
@@ -262,44 +281,44 @@
         });
     }
 
-    getCommodity();
+    // getCommodity();
 
-    select("#formOngkir form").onsubmit = function (e) {
-        console.log('getting ongkir...');
-        let req = post("{{ route('api.calculate') }}", {
-            originID: select("#origin").value,
-            destinationID: select("#destination").value,
-        })
-        .then(res => {
-            res = JSON.parse(res);
-            let commodity = select("#commodity").value;
-            let weight = select("#weight").value;
-            let datas = res.data;
-            select("#ongkirResult").innerHTML = "";
-            datas.forEach(data => {
-                if (data.comodity == commodity && data.qty_tonase == weight) {
-                    console.log(data);
-                    createElement({
-                        el: 'div',
-                        attributes: [['class', 'bagi bagi-2']],
-                        html:   `<div class="wrap">
-                                    <div class="item">
-                                        <div class="wrap super">
-                                            <h3>${data.name} - ${data.qty_tonase} kg</h3>
-                                            <div class="mt-1">${toIdr(data.price_tonase)}</div>
-                                            <div class="mt-2">${data.route}</div>
-                                        </div>
-                                    </div>
-                                </div>`,
-                        createTo: "#ongkirResult"
-                    });
-                } else {
-                    console.log(data);
-                }
-            })
-        })
-        e.preventDefault();
-    }
+    // select("#formOngkir form").onsubmit = function (e) {
+    //     console.log('getting ongkir...');
+    //     let req = post("{{ route('api.calculate') }}", {
+    //         originID: select("#origin").value,
+    //         destinationID: select("#destination").value,
+    //     })
+    //     .then(res => {
+    //         res = JSON.parse(res);
+    //         let commodity = select("#commodity").value;
+    //         let weight = select("#weight").value;
+    //         let datas = res.data;
+    //         select("#ongkirResult").innerHTML = "";
+    //         datas.forEach(data => {
+    //             if (data.comodity == commodity && data.qty_tonase == weight) {
+    //                 console.log(data);
+    //                 createElement({
+    //                     el: 'div',
+    //                     attributes: [['class', 'bagi bagi-2']],
+    //                     html:   `<div class="wrap">
+    //                                 <div class="item">
+    //                                     <div class="wrap super">
+    //                                         <h3>${data.name} - ${data.qty_tonase} kg</h3>
+    //                                         <div class="mt-1">${toIdr(data.price_tonase)}</div>
+    //                                         <div class="mt-2">${data.route}</div>
+    //                                     </div>
+    //                                 </div>
+    //                             </div>`,
+    //                     createTo: "#ongkirResult"
+    //                 });
+    //             } else {
+    //                 console.log(data);
+    //             }
+    //         })
+    //     })
+    //     e.preventDefault();
+    // }
 
     var indexValue = 0;
     const slideShow = () => {
